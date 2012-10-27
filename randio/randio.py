@@ -5,11 +5,13 @@ from random import Random, randrange
 import rtlsdr
 
 
+MHZ = 1e6
+
 class Randio(Random):
 
     def __init__(self,
                  dev_index=None,
-                 freq_range=(64e6, 1100e6, 1000),
+                 freq_range=None,
                  freq_count=32,
                  sample_size=1024,
                  sample_rate=1.2e6,
@@ -18,6 +20,11 @@ class Randio(Random):
 
         if dev_index is None:
             dev_index = os.environ.get('RANDIO_DEV_INDEX', 0)
+
+        if freq_range is None:
+            low = int(os.environ.get('RANDIO_FREQ_LOW', 64)) * MHZ
+            high = int(os.environ.get('RANDIO_FREQ_HIGH', 1100)) * MHZ
+            freq_range = (low, high, 1000)
 
         self.radio = rtlsdr.RtlSdr(dev_index)
         self.radio.rs = sample_rate
@@ -35,7 +42,6 @@ class Randio(Random):
                 self.remaining = self.refresh_rate
             else:
                 self.remaining -= 1
-
         return super(Randio, self).random()
 
     def randio(self):

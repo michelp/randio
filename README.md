@@ -3,11 +3,12 @@ randio
 
 Random number generator from rtl-sdr supported radio dongles.
 
-  WARNING: I am not a cryptographer and have not formally verified the
-  quality of the random data that Randio produces.  The data is based
-  on data samples from random radio frequencies.  Placing your antenna
-  in a high RF environment (outdoors in an urban area) will likely
-  produce better data.
+    WARNING: I am not a cryptographer and have not formally verified
+    the quality of the random data that Randio produces.  The data is
+    based on data samples from random radio frequencies.  Placing your
+    antenna in a high RF environment (outdoors in an urban area) or
+    sampling a narrower, more active band of frequencies (like
+    broadcast television) may produce better data.
 
 randio provides a subclass of random.Random that acts like a normal
 Python random number generator, but gets its seeds from an rtl-sdr
