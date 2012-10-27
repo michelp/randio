@@ -3,14 +3,15 @@
 randio
 ======
 """
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
   name="randio",
-  version="0.1.0",
+  version="0.1.1",
   author='Michel Pelletier',
   author_email='pelletier.michel@yahoo.com',
   description='rtl-sdr radio dongle random number generator',
+  packages=['randio'],
   long_description=__doc__,
   license='MIT License',
   classifiers=[

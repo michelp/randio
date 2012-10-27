@@ -29,12 +29,23 @@ When run as a script, the module creates a default randio object that
 looks for rtl-sdr dongle number 0.  To have it use another dongle, set
 the 'RANDIO_DEV_INDEX' environment variable before running the script.
 
+    $ RANDIO_DEV_INDEX=1 python -i -m randio
+
 When the module imported, there is a couple of second delay while
 radio signals are sampled to provide a random number generator seed.
 By default randio takes 1024 samples from 32 randomly chosen
-frequencies between 64Mhz and 1100Mhz.  The number of samples,
-frequencies, and frequency range can all be adjusted with arguments to
-the Randio class constructor.  See the source code for details.
+frequencies between 64Mhz and 1100Mhz.  To sample a narrower (and
+perhaps "noiser") range of frequencies the RANDIO_FREQ_LOW and
+RANDIO_FREQ_HIGH environment variables can be set:
+
+    $ RANDIO_FREQ_LOW=470 RANDIO_FREQ_HIGH=692 python -i -m randio
+    Found Elonics E4000 tuner
+    >>> randio.freq_range
+    (470000000.0, 692000000.0, 1000)
+
+The number of samples, frequencies, and frequency range can all be
+adjusted with arguments to the Randio class constructor.  See the
+source code for details.
 
 A randio object works like any other python Random subclass:
 
