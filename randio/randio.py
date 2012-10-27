@@ -19,7 +19,7 @@ class Randio(Random):
                  gain=42):
 
         if dev_index is None:
-            dev_index = os.environ.get('RANDIO_DEV_INDEX', 0)
+            dev_index = int(os.environ.get('RANDIO_DEV_INDEX', 0))
 
         if freq_range is None:
             low = int(os.environ.get('RANDIO_FREQ_LOW', 64)) * MHZ
@@ -52,5 +52,8 @@ class Randio(Random):
             samples.append(tuple(self.radio.read_samples(self.sample_size)))
         return tuple(samples)
 
+    def strandio(self):
+        return "".join(map(str, self.randio()))
+
     def sha512(self):
-        return sha512("".join(map(str, randio.randio())))
+        return sha512(self.strandio())
