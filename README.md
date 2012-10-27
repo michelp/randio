@@ -3,6 +3,12 @@ randio
 
 Random number generator from rtl-sdr supported radio dongles.
 
+  WARNING: I am not a cryptographer and have not formally verified the
+  quality of the random data that Randio produces.  The data is based
+  on data samples from random radio frequencies.  Placing your antenna
+  in a high RF environment (outdoors in an urban area) will likely
+  produce better data.
+
 randio provides a subclass of random.Random that acts like a normal
 Python random number generator, but gets its seeds from an rtl-sdr
 radio dongle commonly available for around $20 USD.
@@ -25,7 +31,9 @@ the 'RANDIO_DEV_INDEX' environment variable before running the script.
 When the module imported, there is a couple of second delay while
 radio signals are sampled to provide a random number generator seed.
 By default randio takes 1024 samples from 32 randomly chosen
-frequencies between 64Mhz and 1100Mhz.
+frequencies between 64Mhz and 1100Mhz.  The number of samples,
+frequencies, and frequency range can all be adjusted with arguments to
+the Randio class constructor.  See the source code for details.
 
 A randio object works like any other python Random subclass:
 

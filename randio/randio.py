@@ -1,18 +1,24 @@
+import os
 from hashlib import sha512
 from random import Random, randrange
+
 import rtlsdr
 
 
 class Randio(Random):
 
     def __init__(self,
-                 dev_index=0,
+                 dev_index=None,
                  freq_range=(64e6, 1100e6, 1000),
                  freq_count=32,
                  sample_size=1024,
                  sample_rate=1.2e6,
                  refresh_rate=None,
                  gain=42):
+
+        if dev_index is None:
+            dev_index = os.environ.get('RANDIO_DEV_INDEX', 0)
+
         self.radio = rtlsdr.RtlSdr(dev_index)
         self.radio.rs = sample_rate
         self.freq_range = freq_range
@@ -42,6 +48,3 @@ class Randio(Random):
 
     def sha512(self):
         return sha512("".join(map(str, randio.randio())))
-
-
-randio = Randio(1, refresh_rate=4)
