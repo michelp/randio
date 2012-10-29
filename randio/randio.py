@@ -16,7 +16,7 @@ class Randio(Random):
     def __init__(self,
                  dev_index=None,
                  freq_range=None,
-                 freq_count=128,
+                 freq_count=64,
                  sample_rate=1.2e6,
                  gain='auto'):
 
@@ -31,6 +31,7 @@ class Randio(Random):
         # initialize the pool with some system randomness
         self.pool_size = freq_count * SHA_SIZE
         self.pool = bytearray(" " * self.pool_size)
+        self.poolbytes = range(0, self.pool_size, 16)
         view = memoryview(self.pool)
         for i in xrange(0, self.pool_size, SHA_SIZE):
             randbits = hex(self.getrandbits(SHA_SIZE))
@@ -38,6 +39,7 @@ class Randio(Random):
 
         self.radio = rtlsdr.RtlSdr(dev_index)
         self.radio.rs = sample_rate
+        self.radio.gain = gain
         self.freq_range = freq_range
         self.freq_count = freq_count
         super(Randio, self).__init__()
@@ -64,9 +66,9 @@ class Randio(Random):
 
     def random(self):
         # take a random int from the pool, seed with it
-        i = choice(range(0, self.pool_size, 16))
+        i = choice(self.poolbytes)
         view = memoryview(self.pool)
-        stuff = view[i:i+16].tobytes()
+        stuff = view[i:i+8].tobytes()
         a = long(hexlify(stuff), 16)
         self.seed(a)
         return super(Randio, self).random()
