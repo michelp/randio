@@ -30,7 +30,7 @@ class Randio(Random):
             freq_range = (low, high, 1000)
 
         if freq_count is None:
-            freq_count = int(eget('RANDIO_FREQ_COUNT', 64))
+            freq_count = int(eget('RANDIO_FREQ_COUNT', 32))
 
         if sample_rate is None:
             sample_rate = float(eget('RANDIO_SAMPLE_RATE', 1.2)) * MHZ
@@ -60,8 +60,8 @@ class Randio(Random):
         """
         end = start + SHA_SIZE
         frompool = sha512(view[start:end].tobytes())
-        rrange = randrange(*self.freq_range)
-        self.radio.fc = rrange
+        freq = randrange(*self.freq_range)
+        self.radio.fc = freq
         fromradio = self.radio.read_bytes(SAMPLE_BLOCK_SIZE)
         frompool.update(fromradio)
         view[start:end] = frompool.digest()
@@ -103,9 +103,3 @@ class Randio(Random):
         result = sha512(view[block:block+SHA_SIZE].tobytes())
         self._sample_block(block, view)
         return result
-
-
-class AsyncRandio(Randio):
-
-    def __init__(self, interval, *args, **kwarg):
-        super(AsyncRandio, self).__init__(*args, **kwargs):
