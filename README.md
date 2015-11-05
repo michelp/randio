@@ -1,6 +1,8 @@
 randio
 ======
 
+[You should really go here https://github.com/pwarren/rtl-entropy](https://github.com/pwarren/rtl-entropy)
+
 Random number generator from rtl-sdr supported radio dongles.
 
     WARNING: I am not a cryptographer and have not formally verified
